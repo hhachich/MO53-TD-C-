@@ -20,6 +20,42 @@ public:
     double get_value(size_t position)const;
 
     void sort_list(bool ascending);
+    
+    //return the first element of the list
+    iterator begin() const{
+        return iterator(_head);
+    }
+    //return the last element of the list
+    iterator end() const {
+        return iterator(_tail);
+    }
+    
+    class iterator {
+        private:
+            element *_current;
+        public:
+            iterator(): _current(nullptr){}
+            iterator(element* el): _current(el){}
+            bool operator!=(const iterator& it) const {
+                 return _current != it.current;
+            }
+            //prefix ++ overload
+            iterator& operator++() {
+                _current = _current -> _next;
+                return *this;
+            }
+            
+            //Postfix ++ overload
+            iterator operator++(int)
+            {
+                iterator iterator = *this;
+                ++*this;
+                return iterator;
+            }
+            
+            double operator*() const {return _current -> _value}
+    };
+    
 };
 
 #endif // element_list_H

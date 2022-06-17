@@ -12,10 +12,10 @@ class values_list {
 public:
     values_list(): _head(nullptr), _tail(nullptr) {}
     values_list(const values_list &other);
-    ~values_list() {clear_list();}
+    ~values_list() {clear();}
     values_list &operator=(const values_list &other);
 
-    void clear_list();
+    void clear();
     void add_value(double v); // Always add at the end
     void pop_element(); // Remove last element
     size_t size()const;

@@ -3,9 +3,10 @@
 
 #include "element.h"
 
+template<typename T>
 class element_list {
-    element *_head;
-    element *_tail;
+    element<T> *_head;
+    element<T> *_tail;
 
 public:
     element_list(): _head(nullptr), _tail(nullptr) {}
@@ -20,7 +21,7 @@ public:
     double get_value(size_t position)const;
 
     void sort_list(bool ascending);
-    
+
     //return the first element of the list
     iterator begin() const{
         return iterator(_head);
@@ -29,13 +30,16 @@ public:
     iterator end() const {
         return iterator(_tail);
     }
-    
+
+    template<typename T>
     class iterator {
         private:
-            element *_current;
+            element<T>*_current;
         public:
-            iterator(): _current(nullptr){}
-            iterator(element* el): _current(el){}
+            iterator<T>(): _current(nullptr){}
+
+            iterator<T>(element<T>* el): _current(el){}
+
             bool operator!=(const iterator& it) const {
                  return _current != it.current;
             }
@@ -48,14 +52,14 @@ public:
             //Postfix ++ overload
             iterator operator++(int)
             {
-                iterator iterator = *this;
+                iterator<T> iterator = *this;
                 ++*this;
                 return iterator;
             }
-            
             double operator*() const {return _current -> _value}
     };
-    
-};
 
+};
 #endif // element_list_H
+
+

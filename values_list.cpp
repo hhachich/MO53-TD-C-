@@ -1,4 +1,4 @@
-#include "values_list.h"
+#include "element_list.h"
 #include <fstream>
 #include <exception>
 #include <array>
@@ -6,17 +6,17 @@
 #include <algorithm>
 
 using namespace std;
-values_list::values_list(const values_list &other) {
-    list_element *ptr = other._head;
+element_list::element_list(const element_list &other) {
+    element *ptr = other._head;
     while (ptr) {
         add_value(ptr->get_value());
         ptr = ptr->get_next();
     }
 }
 
-values_list &values_list::operator=(const values_list &other) {
+element_list &element_list::operator=(const element_list &other) {
     clear_list();
-    list_element *ptr = other._head;
+    element *ptr = other._head;
     while (ptr) {
         add_value(ptr->get_value());
         ptr = ptr->get_next();
@@ -24,8 +24,8 @@ values_list &values_list::operator=(const values_list &other) {
     return *this;
 }
 
-void values_list::clear_list() {
-    list_element *tmp = _head;
+void element_list::clear() {
+    element *tmp = _head;
     while (tmp) {
         _head = tmp->get_next();
         delete tmp;
@@ -34,19 +34,19 @@ void values_list::clear_list() {
     _head = _tail = nullptr;
 }
 
-void values_list::add_value(double v) {
+void element_list::add_value(double v) {
     if (!_head) {
-        _head = new list_element(v);
+        _head = new element(v);
         _tail = _head;
     } else {
-        _tail->set_next(new list_element(v, _tail));
+        _tail->set_next(new element(v, _tail));
         _tail = _tail->get_next();
     }
 }
 
-void values_list::pop_element() {
+void element_list::pop_element() {
     if (_head) {
-        list_element *tmp = _head->get_next();
+        element *tmp = _head->get_next();
         delete _head;
         _head = tmp;
         if (tmp) {
@@ -57,9 +57,9 @@ void values_list::pop_element() {
     }
 }
 
-size_t values_list::size() const {
+size_t element_list::size() const {
     size_t s = 0;
-    list_element *ptr = _head;
+    element *ptr = _head;
     while (ptr) {
         ptr = ptr->get_next();
         ++s;
@@ -67,9 +67,9 @@ size_t values_list::size() const {
     return s;
 }
 
-double values_list::get_value(size_t position) const {
+double element_list::get_value(size_t position) const {
     size_t pos = 0;
-    list_element *ptr = _head;
+    element *ptr = _head;
     while (ptr) {
         if (pos == position)
             return ptr->get_value();
@@ -79,11 +79,11 @@ double values_list::get_value(size_t position) const {
     // Error case: position out of bounds
 }
 
-void values_list::sort_list(bool ascending) { // Naive sort
-    list_element *ptr = _head;
+void element_list::sort_list(bool ascending) { // Naive sort
+    element *ptr = _head;
     while (ptr && ptr->get_next()) {
-        list_element *min_element = ptr;
-        list_element *cursor = ptr;
+        element *min_element = ptr;
+        element *cursor = ptr;
         while (cursor) {
             if (ascending && cursor->get_value() < min_element->get_value())
                 min_element = cursor;
